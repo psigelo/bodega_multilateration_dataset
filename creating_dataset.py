@@ -35,6 +35,7 @@ def main(user, password, amount_of_rows_per_beacon):
     if not os.path.exists('./result/'):
         os.makedirs('./result/')
     all_data.to_csv('./result/all.csv')
+    print(all_data)
 
 
 if __name__ == '__main__':
