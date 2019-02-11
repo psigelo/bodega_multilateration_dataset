@@ -26,7 +26,7 @@ def main(user, password, amount_of_rows_per_beacon):
     for beamer in beamers_names:
         for beacon in beacons_names:
             sql = "select payload from beacondata WHERE mac ='" + beacon + " and gateway='" +\
-                  beamer + "' order by id desc limit" + str(amount_of_rows_per_beacon) + ";"
+                  beamer + "' order by id desc limit " + str(amount_of_rows_per_beacon) + ";"
             all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
 
     mysql_cn.close()
