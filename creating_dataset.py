@@ -23,12 +23,14 @@ def main(user, password, amount_of_rows_per_beacon):
                                passwd=password,
                                db='beacon')
     all_data = pd.DataFrame()
+    print("starting to create dataset")
     for beamer in beamers_names:
+        print("beamer: ", beamer)
         for beacon in beacons_names:
             sql = "select payload from beacondata WHERE mac ='" + beacon + "' and gateway='" +\
                   beamer + "' order by id desc limit " + str(amount_of_rows_per_beacon) + ";"
             all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
-
+    print("dataset all data obtained, storing in ./result/all.csv")
     mysql_cn.close()
     if not os.path.exists('./result/'):
         os.makedirs('./result/')
