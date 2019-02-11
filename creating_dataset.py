@@ -27,8 +27,9 @@ def main(user, password, amount_of_rows_per_beacon):
     for beamer in beamers_names:
         print("beamer: ", beamer)
         for beacon in beacons_names:
-            sql = "select payload from beacondata WHERE mac ='" + beacon + "' and gateway='" +\
-                  beamer + "' order by id desc limit " + str(amount_of_rows_per_beacon) + ";"
+
+            sql = 'select a.id, a.mac as mac, a.payload->>"$.type" as type, a.payload->>"$.timestamp" as ts, a.payload->>"$.rawData" as rawdata , a.gateway,a.updated_at from beacondata WHERE mac =\'' \
+                  + beacon + '\' and gateway=\'' + beamer + '\' order by id desc limit ' + str(amount_of_rows_per_beacon) + ";"
             all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
     print("dataset all data obtained, storing in ./result/all.csv")
     mysql_cn.close()
