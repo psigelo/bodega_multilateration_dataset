@@ -33,6 +33,7 @@ def main(user, password, amount_of_rows_per_beacon):
             all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
     print("dataset all data obtained, storing in ./result/all.csv")
     mysql_cn.close()
+    all_data['rssi'] = pd.to_numeric(all_data['rssi'])
     if not os.path.exists('./result/'):
         os.makedirs('./result/')
     all_data.to_csv('./result/all.csv')
