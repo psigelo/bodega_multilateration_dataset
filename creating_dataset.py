@@ -24,13 +24,12 @@ def main(user, password, amount_of_rows_per_beacon):
                                db='beacon')
     all_data = pd.DataFrame()
     print("starting to create dataset")
-    for beamer in beamers_names:
-        print("beamer: ", beamer)
-        for beacon in beacons_names:
 
-            sql = 'select a.id as b_id, a.mac as mac, a.payload->>"$.type" as type, a.payload->>"$.timestamp" as ts, a.payload->>"$.rssi" as rssi , a.gateway,a.updated_at from beacondata a ' \
-                  'WHERE mac =\'' + beacon + '\' and gateway=\'' + beamer + "'  AND updated_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR);"
-            all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
+    for beacon in beacons_names:
+
+        sql = 'select a.id as b_id, a.mac as mac, a.payload->>"$.type" as type, a.payload->>"$.timestamp" as ts, a.payload->>"$.rssi" as rssi , a.gateway,a.updated_at from beacondata a ' \
+              'WHERE mac =\'' + beacon + "'  AND updated_at >= DATE_SUB(NOW(),INTERVAL 1 HOUR);"
+        all_data = all_data.append(pd.read_sql(sql, con=mysql_cn))
     print("dataset all data obtained, storing in ./result/all.csv")
     mysql_cn.close()
     all_data['rssi'] = pd.to_numeric(all_data['rssi'])
