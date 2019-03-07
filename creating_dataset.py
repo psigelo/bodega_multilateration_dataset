@@ -15,13 +15,17 @@ def get_all_know_data():
 
 def main(user, password, amount_of_rows_per_beacon):
     beacons_information, beamers_information = get_all_know_data()
-    beacons_names = beacons_information.name.unique()
+    # beacons_names = beacons_information.name.unique()
+    
     beamers_names = beamers_information.name.unique()
     mysql_cn = MySQLdb.connect(host='localhost',
                                port=3306,
                                user=user,
                                passwd=password,
                                db='beacon')
+    sql = 'select mac from tenant_beacon;'
+    beacons_names = pd.read_sql(sql, con=mysql_cn).mac.unique()
+    print(beacons_names)
     all_data = pd.DataFrame()
     print("starting to create dataset")
 
